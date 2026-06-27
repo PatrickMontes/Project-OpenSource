@@ -19,8 +19,8 @@ import java.util.UUID;
 public class Empleado {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private Integer dni;
 
@@ -33,6 +33,7 @@ public class Empleado {
     @Enumerated(EnumType.STRING)
     private SexoType sexo;
 
+    @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
 
     private String correo;

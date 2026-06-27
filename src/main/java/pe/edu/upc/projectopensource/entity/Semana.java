@@ -17,13 +17,16 @@ import java.util.UUID;
 public class Semana {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(name = "fecha_inicio")
     private LocalDate fechaInicio;
 
+    @Column(name = "fecha_fin")
     private LocalDate fechaFin;
 
+    @Column(name = "numero_semana")
     private Integer numeroSemana;
 
     @ManyToOne

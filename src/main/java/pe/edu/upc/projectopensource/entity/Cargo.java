@@ -17,11 +17,12 @@ import java.util.UUID;
 public class Cargo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private CargoType nombre;
 
+    @Column(name = "salario_semanal")
     private BigDecimal salarioSemanal;
 }

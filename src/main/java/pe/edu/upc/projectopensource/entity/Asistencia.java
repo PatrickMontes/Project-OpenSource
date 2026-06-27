@@ -18,8 +18,8 @@ import java.util.UUID;
 public class Asistencia {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "empleado_id")
@@ -34,10 +34,13 @@ public class Asistencia {
     @Enumerated(EnumType.STRING)
     private EstadoAsisteciaType estado;
 
+    @Column(name = "minutos_extras")
     private Integer minutosExtras;
 
+    @Column(name = "minutos_atrasadas")
     private Integer minutosAtrasadas;
 
+    @Column(name = "fecha_modificacion")
     private LocalDateTime fechaModificacion;
 
     private String observaciones;

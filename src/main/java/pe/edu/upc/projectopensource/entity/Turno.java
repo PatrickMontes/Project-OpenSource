@@ -17,13 +17,15 @@ import java.util.UUID;
 public class Turno {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private TipoTurnoType tipo;
 
+    @Column(name = "hora_inicio")
     private LocalTime horaInicio;
 
+    @Column(name = "hora_fin")
     private LocalTime horaFin;
 }

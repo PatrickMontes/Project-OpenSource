@@ -16,8 +16,8 @@ import java.util.UUID;
 public class Pago {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "planilla_id")
@@ -27,9 +27,12 @@ public class Pago {
     @JoinColumn(name = "empleado_id")
     private Empleado empleado;
 
+    @Column(name = "pago_bruto")
     private BigDecimal pagoBruto;
 
+    @Column(name = "minutos_extras_totales")
     private Integer minutosExtrasTotales;
 
+    @Column(name = "pago_neto")
     private BigDecimal pagoNeto;
 }

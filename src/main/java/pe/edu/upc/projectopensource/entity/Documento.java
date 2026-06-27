@@ -16,14 +16,15 @@ import java.util.UUID;
 public class Documento {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "empleado_id")
     private Empleado empleado;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_documento")
     private DocumentoType tipoDocumento;
 
     private String url;

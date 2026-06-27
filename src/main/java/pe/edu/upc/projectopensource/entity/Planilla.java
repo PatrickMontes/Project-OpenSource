@@ -16,12 +16,13 @@ import java.util.UUID;
 public class Planilla {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "semana_id")
     private Semana semana;
 
+    @Column(name = "total_gastado")
     private BigDecimal totalGastado;
 }

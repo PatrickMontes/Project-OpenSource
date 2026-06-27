@@ -15,8 +15,8 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String nombres;
 
@@ -25,5 +25,6 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    @Column(name = "is_active")
     private Boolean isActive;
 }
