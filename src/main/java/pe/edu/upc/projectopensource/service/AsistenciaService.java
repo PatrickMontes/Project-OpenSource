@@ -14,7 +14,6 @@ import pe.edu.upc.projectopensource.repository.SemanaRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +62,13 @@ public class AsistenciaService {
             throw new RuntimeException("Semana no existe");
         }
 
-        return asistenciaRepository.findAsistencias(empleadoId, semanaId, estado, fechaInicio, fechaFin);
+        List<Asistencia> asistencias = asistenciaRepository.findAsistencias(empleadoId, semanaId, estado, fechaInicio, fechaFin);
+
+        if (asistencias.isEmpty()) {
+            throw new RuntimeException("No se encontraron asistencias que coincidan con los criterios de búsqueda");
+        }
+
+        return asistencias;
     }
 
 
@@ -92,10 +97,9 @@ public class AsistenciaService {
 
 
     public void eliminarAsistencia(Long id){
-        if(!asistenciaRepository.existsById(id)){
-            throw new RuntimeException("Asistencia no encontrada");
-        }
+        Asistencia asistencia = asistenciaRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Asistencia no encontrada"));
 
-        asistenciaRepository.deleteById(id);
+        asistenciaRepository.delete(asistencia);
     }
 }
