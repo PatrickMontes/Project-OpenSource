@@ -1,12 +1,11 @@
 package pe.edu.upc.projectopensource.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.projectopensource.entity.Asistencia;
 import pe.edu.upc.projectopensource.entity.Empleado;
 import pe.edu.upc.projectopensource.entity.Semana;
-import pe.edu.upc.projectopensource.entity.enums.EstadoAsisteciaType;
+import pe.edu.upc.projectopensource.entity.enums.EstadoAsistenciaType;
 import pe.edu.upc.projectopensource.repository.AsistenciaRepository;
 import pe.edu.upc.projectopensource.repository.EmpleadoRepository;
 import pe.edu.upc.projectopensource.repository.SemanaRepository;
@@ -42,7 +41,7 @@ public class AsistenciaService {
     }
 
 
-    public List<Asistencia> buscarAsistencias(Long empleadoId, Long semanaId, EstadoAsisteciaType estado, LocalDate fechaInicio, LocalDate fechaFin){
+    public List<Asistencia> buscarAsistencias(Long empleadoId, Long semanaId, EstadoAsistenciaType estado, LocalDate fechaInicio, LocalDate fechaFin){
         return asistenciaRepository.findAsistencias(empleadoId, semanaId, estado, fechaInicio, fechaFin);
     }
 

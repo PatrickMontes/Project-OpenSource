@@ -3,7 +3,7 @@ package pe.edu.upc.projectopensource.entity.enums;
 import lombok.Getter;
 
 @Getter
-public enum EstadoAsisteciaType {
+public enum EstadoAsistenciaType {
     PRESENTE("Presente"),
     TARDE("Tarde"),
     AUSENTE("Ausente"),
@@ -11,7 +11,7 @@ public enum EstadoAsisteciaType {
 
     private final String descripcion;
 
-    EstadoAsisteciaType(String descripcion) {
+    EstadoAsistenciaType(String descripcion) {
         this.descripcion = descripcion;
     }
 
