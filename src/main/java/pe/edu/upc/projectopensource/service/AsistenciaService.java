@@ -30,45 +30,20 @@ public class AsistenciaService {
         Semana semana = semanaRepository.findById(asistencia.getSemana().getId()).orElseThrow(
                 () -> new RuntimeException(("Semana no encontrada")));
 
-        if(asistencia.getFecha() == null){
-            throw new RuntimeException("La fecha es obligatoria");
-        }
-
-        if(asistencia.getMinutosExtras() < 0){
-            throw new RuntimeException(("Los minutos extras no pueden ser negativos"));
-        }
+        asistencia.setEmpleado(empleado);
+        asistencia.setSemana(semana);
 
         return asistenciaRepository.save(asistencia);
     }
 
 
     public List<Asistencia> obtenerAsistencias (){
-        List<Asistencia> asistencias = asistenciaRepository.findAll();
-
-        if (asistencias.isEmpty()){
-            throw new RuntimeException(("No existen asistencias registradas"));
-        }
-
-        return asistencias;
+        return asistenciaRepository.findAll();
     }
 
 
     public List<Asistencia> buscarAsistencias(Long empleadoId, Long semanaId, EstadoAsisteciaType estado, LocalDate fechaInicio, LocalDate fechaFin){
-        if(!empleadoRepository.existsById(empleadoId)){
-            throw new RuntimeException("Empleado no existe");
-        }
-
-        if (!semanaRepository.existsById(semanaId)){
-            throw new RuntimeException("Semana no existe");
-        }
-
-        List<Asistencia> asistencias = asistenciaRepository.findAsistencias(empleadoId, semanaId, estado, fechaInicio, fechaFin);
-
-        if (asistencias.isEmpty()) {
-            throw new RuntimeException("No se encontraron asistencias que coincidan con los criterios de búsqueda");
-        }
-
-        return asistencias;
+        return asistenciaRepository.findAsistencias(empleadoId, semanaId, estado, fechaInicio, fechaFin);
     }
 
 

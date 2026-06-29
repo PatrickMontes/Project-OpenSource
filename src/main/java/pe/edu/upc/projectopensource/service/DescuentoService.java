@@ -3,6 +3,8 @@ package pe.edu.upc.projectopensource.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.projectopensource.entity.Descuento;
+import pe.edu.upc.projectopensource.entity.Empleado;
+import pe.edu.upc.projectopensource.entity.Semana;
 import pe.edu.upc.projectopensource.repository.DescuentoRepository;
 import pe.edu.upc.projectopensource.repository.EmpleadoRepository;
 import pe.edu.upc.projectopensource.repository.SemanaRepository;
@@ -18,44 +20,25 @@ public class DescuentoService {
 
 
     public Descuento crearDescuento(Descuento descuento){
-        empleadoRepository.findById(descuento.getEmpleado().getId()).orElseThrow(
+        Empleado empleado = empleadoRepository.findById(descuento.getEmpleado().getId()).orElseThrow(
                 () -> new RuntimeException("No se encontró el empleado"));
 
-        semanaRepository.findById(descuento.getSemana().getId()).orElseThrow(
+        Semana semana = semanaRepository.findById(descuento.getSemana().getId()).orElseThrow(
                 () -> new RuntimeException("No se encontró la semana"));
 
-        if(descuento.getMonto() == null || descuento.getMonto().doubleValue() <= 0){
-            throw new RuntimeException("El monto del descuento es obligatorio y debe ser un valor positivo");
-        }
-
-        if(descuento.getRazon() == null || descuento.getRazon().isEmpty()){
-            throw new RuntimeException("La razón del descuento es obligatoria");
-        }
+        descuento.setEmpleado(empleado);
+        descuento.setSemana(semana);
 
         return descuentoRepository.save(descuento);
     }
 
 
     public List<Descuento> obtenerDescuentos(){
-        List<Descuento> descuentos = descuentoRepository.findAll();
-
-        if(descuentos.isEmpty()){
-            throw new RuntimeException("No existen descuentos registrados");
-        }
-
-        return descuentos;
+        return descuentoRepository.findAll();
     }
 
 
     public List<Descuento> buscarDescuentos(Long empleadoId, Long semanaId){
-        if(!empleadoRepository.existsById(empleadoId)){
-            throw new RuntimeException("Empleado no existe");
-        }
-
-        if (!semanaRepository.existsById(semanaId)){
-            throw new RuntimeException("Semana no existe");
-        }
-
         return descuentoRepository.buscarDescuentos(empleadoId, semanaId);
     }
 

@@ -14,26 +14,12 @@ public class CargoService {
 
 
     public Cargo crearCargo(Cargo cargo){
-        if(cargo.getNombre() == null){
-            throw new RuntimeException("El nombre del cargo es obligatorio");
-        }
-
-        if(cargo.getSalarioSemanal() == null || cargo.getSalarioSemanal().doubleValue() <= 0){
-            throw new RuntimeException("El salario semanal del cargo es obligatorio y debe ser un valor positivo");
-        }
-
         return cargoRepository.save(cargo);
     }
 
 
     public List<Cargo> obtenerCargos(){
-        List<Cargo> cargos = cargoRepository.findAll();
-
-        if(cargos.isEmpty()){
-            throw new RuntimeException("No existen cargos registrados");
-        }
-
-        return cargos;
+        return cargoRepository.findAll();
     }
 
 
