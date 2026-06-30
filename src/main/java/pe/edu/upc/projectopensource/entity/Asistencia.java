@@ -7,11 +7,10 @@ import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pe.edu.upc.projectopensource.entity.enums.EstadoAsisteciaType;
+import pe.edu.upc.projectopensource.entity.enums.EstadoAsistenciaType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -38,7 +37,7 @@ public class Asistencia {
     private LocalDate fecha;
 
     @Enumerated(EnumType.STRING)
-    private EstadoAsisteciaType estado;
+    private EstadoAsistenciaType estado;
 
     @Column(name = "minutos_extras")
     @Min(value = 0, message = "Los minutos extras no pueden ser un valor negativo")

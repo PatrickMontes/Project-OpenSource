@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pe.edu.upc.projectopensource.entity.Asistencia;
-import pe.edu.upc.projectopensource.entity.enums.EstadoAsisteciaType;
+import pe.edu.upc.projectopensource.entity.enums.EstadoAsistenciaType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,5 +23,5 @@ public interface AsistenciaRepository extends JpaRepository<Asistencia, Long> {
         OR a.fecha BETWEEN :fechaInicio AND :fechaFin
     )
     """)
-    List<Asistencia> findAsistencias( Long empleadoId, Long semanaId, EstadoAsisteciaType estado, LocalDate fechaInicio, LocalDate fechaFin);
+    List<Asistencia> findAsistencias(Long empleadoId, Long semanaId, EstadoAsistenciaType estado, LocalDate fechaInicio, LocalDate fechaFin);
 }
