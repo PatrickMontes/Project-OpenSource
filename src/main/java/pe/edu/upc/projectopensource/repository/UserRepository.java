@@ -6,4 +6,5 @@ import pe.edu.upc.projectopensource.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
 }
