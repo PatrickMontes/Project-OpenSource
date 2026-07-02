@@ -25,7 +25,6 @@ public class DocumentoController {
         return documentoService.obtenerDocumentos();
     }
 
-    // Buscador flexible adaptado exactamente a los 2 parámetros de tu Service
     @GetMapping("/buscar")
     public List<Documento> buscarDocumentos(
             @RequestParam(required = false) Long empleadoId,
