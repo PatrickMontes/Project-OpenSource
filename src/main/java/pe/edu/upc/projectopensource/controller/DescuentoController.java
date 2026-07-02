@@ -29,7 +29,6 @@ public class DescuentoController {
         return descuentoService.obtenerDescuento(id);
     }
 
-    // Buscador flexible adaptado exactamente al método del Service
     @GetMapping("/buscar")
     public List<Descuento> buscarDescuentos(
             @RequestParam(required = false) Long empleadoId,
