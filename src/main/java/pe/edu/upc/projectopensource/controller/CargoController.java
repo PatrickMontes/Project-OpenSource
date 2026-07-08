@@ -16,7 +16,7 @@ public class CargoController {
 
     private final CargoService cargoService;
 
-    @PostMapping
+    @PostMapping("/crear")
     public Cargo crearCargo(@RequestBody Cargo cargo) {
         return cargoService.crearCargo(cargo);
     }

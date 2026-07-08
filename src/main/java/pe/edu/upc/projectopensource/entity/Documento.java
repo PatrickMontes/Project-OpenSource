@@ -33,4 +33,7 @@ public class Documento {
 
     @NotBlank(message = "La ruta o URL del documento es obligatoria")
     private String url;
+
+    @Column(name = "public_id")
+    private String publicId;
 }

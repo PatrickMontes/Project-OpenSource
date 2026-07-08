@@ -20,7 +20,7 @@ public class EmpleadoController {
 
     private final EmpleadoService empleadoService;
 
-    @PostMapping
+    @PostMapping("/crear")
     public Empleado crearEmpleado(@RequestBody Empleado empleado) {
         return empleadoService.crearEmpleado(empleado);
     }
