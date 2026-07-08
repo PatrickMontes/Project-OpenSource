@@ -1,5 +1,6 @@
 package pe.edu.upc.projectopensource.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/asistencias")
+@Tag(name = "Asistencias", description = "Registro y consulta de asistencias de los empleados")
 @RequiredArgsConstructor
 public class AsistenciaController {
 

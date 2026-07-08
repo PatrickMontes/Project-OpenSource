@@ -1,5 +1,6 @@
 package pe.edu.upc.projectopensource.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.projectopensource.entity.Descuento;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/descuentos")
+@Tag(name = "Descuentos", description = "Gestión de descuentos aplicados a los pagos de empleados")
 @RequiredArgsConstructor
 public class DescuentoController {
 
