@@ -23,8 +23,9 @@ public class Empleado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El DNI es obligatorio")
-    @Size(min = 8, max = 8, message = "El DNI debe tener 8 dígitos")
+    @NotNull(message = "El DNI es obligatorio")
+    @Min(value = 10000000, message = "El DNI debe tener 8 dígitos")
+    @Max(value = 99999999, message = "El DNI debe tener 8 dígitos")
     private Integer dni;
 
     @NotBlank(message = "Los nombres son obligatorios")
@@ -51,7 +52,8 @@ public class Empleado {
     private String correo;
 
     @NotNull(message = "El celular es obligatorio")
-    @Size(min = 9, max = 9, message = "El celular debe tener 9 dígitos")
+    @Min(value = 100000000, message = "El celular debe tener 9 dígitos")
+    @Max(value = 999999999, message = "El celular debe tener 9 dígitos")
     private Integer celular;
 
     @NotNull(message = "El asegurado es obligatorio")

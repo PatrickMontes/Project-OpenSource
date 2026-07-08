@@ -1,5 +1,6 @@
 package pe.edu.upc.projectopensource.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.projectopensource.entity.Direccion;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/empleados")
+@Tag(name = "Empleados", description = "Gestión de empleados: datos personales, dirección y examen médico")
 @RequiredArgsConstructor
 public class EmpleadoController {
 
