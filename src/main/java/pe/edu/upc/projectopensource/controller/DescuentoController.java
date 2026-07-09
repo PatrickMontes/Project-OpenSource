@@ -21,12 +21,12 @@ public class DescuentoController {
         return descuentoService.crearDescuento(descuento);
     }
 
-    @GetMapping
+    @GetMapping("/lista")
     public List<Descuento> obtenerDescuentos() {
         return descuentoService.obtenerDescuentos();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/detalle")
     public Descuento obtenerDescuento(@PathVariable Long id) {
         return descuentoService.obtenerDescuento(id);
     }

@@ -24,7 +24,7 @@ public class AsistenciaController {
         return asistenciaService.crearAsistencia(asistencia);
     }
 
-    @GetMapping
+    @GetMapping("/lista")
     public List<Asistencia> obtenerAsistencias() {
         return asistenciaService.obtenerAsistencias();
     }

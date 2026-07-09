@@ -24,12 +24,12 @@ public class PagoController {
         return pagoService.crearPago(empleadoId, planillaId);
     }
 
-    @GetMapping
+    @GetMapping("/lista")
     public List<Pago> obtenerPagos() {
         return pagoService.obtenerPagos();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/detalle")
     public Pago obtenerPago(@PathVariable Long id) {
         return pagoService.obtenerPago(id);
     }

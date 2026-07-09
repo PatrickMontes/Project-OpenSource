@@ -21,12 +21,12 @@ public class TurnoController {
         return turnoService.crearTurno(turno);
     }
 
-    @GetMapping
+    @GetMapping("/lista")
     public List<Turno> obtenerTurnos() {
         return turnoService.obtenerTurnos();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/detalle")
     public Turno obtenerTurno(@PathVariable Long id) {
         return turnoService.obtenerTurno(id);
     }

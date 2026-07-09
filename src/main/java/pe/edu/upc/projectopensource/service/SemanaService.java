@@ -1,5 +1,6 @@
 package pe.edu.upc.projectopensource.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.projectopensource.entity.Semana;
@@ -16,12 +17,15 @@ public class SemanaService {
     private final SemanaRepository semanaRepository;
 
 
+    @Transactional
     public Semana crearSemana(Semana semana){
-        Turno turno = turnoRepository.findById(semana.getTurno().getId()).orElseThrow(
-                () -> new RuntimeException("Turno no encontrado"));
-
+        Long turnoId = semana.getTurnoId();
+        if (turnoId == null) {
+            throw new IllegalArgumentException("El campo 'turnoId' es obligatorio");
+        }
+        Turno turno = turnoRepository.findById(turnoId)
+                .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
         semana.setTurno(turno);
-
         return semanaRepository.save(semana);
     }
 

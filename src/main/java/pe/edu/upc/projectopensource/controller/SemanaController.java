@@ -16,17 +16,17 @@ public class SemanaController {
 
     private final SemanaService semanaService;
 
-    @PostMapping
+    @PostMapping("/crear")
     public Semana crearSemana(@RequestBody Semana semana) {
         return semanaService.crearSemana(semana);
     }
 
-    @GetMapping
+    @GetMapping("/lista")
     public List<Semana> obtenerSemanas() {
         return semanaService.obtenerSemanas();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/detalle")
     public Semana obtenerSemana(@PathVariable Long id) {
         return semanaService.obtenerSemana(id);
     }

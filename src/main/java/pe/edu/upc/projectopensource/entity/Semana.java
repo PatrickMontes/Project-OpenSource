@@ -43,4 +43,8 @@ public class Semana {
     @Enumerated(EnumType.STRING)
     @NotNull(message = "El estado de la semana es obligatorio")
     private EstadoSemanaType estado;
+
+    @Transient
+    private Long turnoId;
+
 }

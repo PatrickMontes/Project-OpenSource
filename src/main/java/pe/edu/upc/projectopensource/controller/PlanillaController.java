@@ -21,12 +21,12 @@ public class PlanillaController {
         return planillaService.crearPlanilla(semanaId);
     }
 
-    @GetMapping
+    @GetMapping("/lista")
     public List<Planilla> obtenerPlanillas() {
         return planillaService.obtenerPlanillas();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/detalle")
     public Planilla obtenerPlanilla(@PathVariable Long id) {
         return planillaService.obtenerPlanilla(id);
     }
