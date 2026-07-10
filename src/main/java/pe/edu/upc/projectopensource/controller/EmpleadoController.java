@@ -1,14 +1,18 @@
 package pe.edu.upc.projectopensource.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.upc.projectopensource.entity.Direccion;
-import pe.edu.upc.projectopensource.entity.Empleado;
-import pe.edu.upc.projectopensource.entity.ExamenMedico;
+import pe.edu.upc.projectopensource.dto.DireccionDTO;
+import pe.edu.upc.projectopensource.dto.EmpleadoDTO;
+import pe.edu.upc.projectopensource.dto.ExamenMedicoDTO;
 import pe.edu.upc.projectopensource.entity.enums.EstadoType;
 import pe.edu.upc.projectopensource.entity.enums.SexoType;
 import pe.edu.upc.projectopensource.service.EmpleadoService;
+import pe.edu.upc.projectopensource.utils.Response;
 
 import java.util.List;
 
@@ -21,22 +25,43 @@ public class EmpleadoController {
     private final EmpleadoService empleadoService;
 
     @PostMapping("/crear")
-    public Empleado crearEmpleado(@RequestBody Empleado empleado) {
-        return empleadoService.crearEmpleado(empleado);
+    public ResponseEntity<Response<EmpleadoDTO>> crearEmpleado(@Valid @RequestBody EmpleadoDTO empleadoDTO) {
+        EmpleadoDTO data = empleadoService.crearEmpleado(empleadoDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Response.<EmpleadoDTO>builder()
+                        .status(HttpStatus.CREATED.value())
+                        .message("Empleado creado exitosamente")
+                        .data(data)
+                        .build());
     }
 
-    @GetMapping
-    public List<Empleado> obtenerEmpleados() {
-        return empleadoService.obtenerEmpleados();
+    @GetMapping("/lista")
+    public ResponseEntity<Response<List<EmpleadoDTO>>> obtenerEmpleados() {
+        List<EmpleadoDTO> data = empleadoService.obtenerEmpleados();
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Response.<List<EmpleadoDTO>>builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Lista de empleados")
+                        .data(data)
+                        .build());
     }
 
     @GetMapping("/{id}")
-    public Empleado obtenerEmpleado(@PathVariable Long id) {
-        return empleadoService.obtenerEmpleado(id);
+    public ResponseEntity<Response<EmpleadoDTO>> obtenerEmpleado(@PathVariable Long id) {
+        EmpleadoDTO data = empleadoService.obtenerEmpleado(id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Response.<EmpleadoDTO>builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Empleado encontrado")
+                        .data(data)
+                        .build());
     }
 
     @GetMapping("/buscar")
-    public List<Empleado> buscarEmpleados(
+    public ResponseEntity<Response<List<EmpleadoDTO>>> buscarEmpleados(
             @RequestParam(required = false) Integer dni,
             @RequestParam(required = false) String nombres,
             @RequestParam(required = false) String apellidos,
@@ -44,42 +69,69 @@ public class EmpleadoController {
             @RequestParam(required = false) EstadoType estado,
             @RequestParam(required = false) Boolean asegurado
     ) {
-        return empleadoService.buscarEmpleados(
-                dni,
-                nombres,
-                apellidos,
-                sexo,
-                estado,
-                asegurado
-        );
+        List<EmpleadoDTO> data = empleadoService.buscarEmpleados(dni, nombres, apellidos, sexo, estado, asegurado);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Response.<List<EmpleadoDTO>>builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Resultados de búsqueda")
+                        .data(data)
+                        .build());
     }
 
-    @PutMapping("/{id}")
-    public Empleado actualizarEmpleado(
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Response<EmpleadoDTO>> actualizarEmpleado(
             @PathVariable Long id,
-            @RequestBody Empleado empleado
+            @Valid @RequestBody EmpleadoDTO empleadoDTO
     ) {
-        return empleadoService.actualizarEmpleado(id, empleado);
+        EmpleadoDTO data = empleadoService.actualizarEmpleado(id, empleadoDTO);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Response.<EmpleadoDTO>builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Empleado actualizado exitosamente")
+                        .data(data)
+                        .build());
     }
 
-    @DeleteMapping("/{id}")
-    public void eliminarEmpleado(@PathVariable Long id) {
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<Response<Void>> eliminarEmpleado(@PathVariable Long id) {
         empleadoService.eliminarEmpleado(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(Response.<Void>builder()
+                        .status(HttpStatus.NO_CONTENT.value())
+                        .message("Empleado eliminado exitosamente")
+                        .build());
     }
 
     @PutMapping("/{id}/direccion")
-    public Empleado actualizarDireccion(
+    public ResponseEntity<Response<EmpleadoDTO>> actualizarDireccion(
             @PathVariable Long id,
-            @RequestBody Direccion direccion
+            @Valid @RequestBody DireccionDTO direccionDTO
     ) {
-        return empleadoService.actualizarDireccionEmpleado(id, direccion);
+        EmpleadoDTO data = empleadoService.actualizarDireccionEmpleado(id, direccionDTO);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Response.<EmpleadoDTO>builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Dirección actualizada exitosamente")
+                        .data(data)
+                        .build());
     }
 
     @PutMapping("/{id}/examen-medico")
-    public Empleado actualizarExamenMedico(
+    public ResponseEntity<Response<EmpleadoDTO>> actualizarExamenMedico(
             @PathVariable Long id,
-            @RequestBody ExamenMedico examenMedico
+            @Valid @RequestBody ExamenMedicoDTO examenMedicoDTO
     ) {
-        return empleadoService.actualizarExamenMedicoEmpleado(id, examenMedico);
+        EmpleadoDTO data = empleadoService.actualizarExamenMedicoEmpleado(id, examenMedicoDTO);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Response.<EmpleadoDTO>builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Examen médico actualizado exitosamente")
+                        .data(data)
+                        .build());
     }
 }

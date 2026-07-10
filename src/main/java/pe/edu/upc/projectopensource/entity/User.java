@@ -8,8 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @Entity
 @NoArgsConstructor
@@ -32,7 +30,12 @@ public class User {
     @Email(message = "El email debe tener un formato válido")
     private String email;
 
-    @Column(name = "is_active")
+    @NotBlank(message = "La contraseña es obligatoria")
+    private String password;
+
     @NotNull(message = "El estado de actividad es obligatorio")
+    @Column(name = "is_active")
     private Boolean isActive;
+
+    private String role;
 }

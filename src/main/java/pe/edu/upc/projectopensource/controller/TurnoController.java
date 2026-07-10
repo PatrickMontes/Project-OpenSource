@@ -1,10 +1,14 @@
 package pe.edu.upc.projectopensource.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.upc.projectopensource.entity.Turno;
+import pe.edu.upc.projectopensource.dto.TurnoDTO;
 import pe.edu.upc.projectopensource.service.TurnoService;
+import pe.edu.upc.projectopensource.utils.Response;
 
 import java.util.List;
 
@@ -16,31 +20,65 @@ public class TurnoController {
 
     private final TurnoService turnoService;
 
-    @PostMapping
-    public Turno crearTurno(@RequestBody Turno turno) {
-        return turnoService.crearTurno(turno);
+    @PostMapping("/crear")
+    public ResponseEntity<Response<TurnoDTO>> crearTurno(@Valid @RequestBody TurnoDTO turnoDTO) {
+        TurnoDTO data = turnoService.crearTurno(turnoDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Response.<TurnoDTO>builder()
+                        .status(HttpStatus.CREATED.value())
+                        .message("Turno creado exitosamente")
+                        .data(data)
+                        .build());
     }
 
-    @GetMapping
-    public List<Turno> obtenerTurnos() {
-        return turnoService.obtenerTurnos();
+    @GetMapping("/lista")
+    public ResponseEntity<Response<List<TurnoDTO>>> obtenerTurnos() {
+        List<TurnoDTO> data = turnoService.obtenerTurnos();
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Response.<List<TurnoDTO>>builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Lista de turnos")
+                        .data(data)
+                        .build());
     }
 
     @GetMapping("/{id}")
-    public Turno obtenerTurno(@PathVariable Long id) {
-        return turnoService.obtenerTurno(id);
+    public ResponseEntity<Response<TurnoDTO>> obtenerTurno(@PathVariable Long id) {
+        TurnoDTO data = turnoService.obtenerTurno(id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Response.<TurnoDTO>builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Turno encontrado")
+                        .data(data)
+                        .build());
     }
 
-    @PutMapping("/{id}")
-    public Turno actualizarTurno(
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Response<TurnoDTO>> actualizarTurno(
             @PathVariable Long id,
-            @RequestBody Turno turno
+            @Valid @RequestBody TurnoDTO turnoDTO
     ) {
-        return turnoService.actualizarTurno(id, turno);
+        TurnoDTO data = turnoService.actualizarTurno(id, turnoDTO);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Response.<TurnoDTO>builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Turno actualizado exitosamente")
+                        .data(data)
+                        .build());
     }
 
-    @DeleteMapping("/{id}")
-    public void eliminarTurno(@PathVariable Long id) {
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<Response<Void>> eliminarTurno(@PathVariable Long id) {
         turnoService.eliminarTurno(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(Response.<Void>builder()
+                        .status(HttpStatus.NO_CONTENT.value())
+                        .message("Turno eliminado exitosamente")
+                        .build());
     }
 }

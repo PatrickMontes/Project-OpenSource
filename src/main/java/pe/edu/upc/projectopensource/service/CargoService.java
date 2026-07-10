@@ -2,7 +2,9 @@ package pe.edu.upc.projectopensource.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pe.edu.upc.projectopensource.dto.CargoDTO;
 import pe.edu.upc.projectopensource.entity.Cargo;
+import pe.edu.upc.projectopensource.mapper.CargoMapper;
 import pe.edu.upc.projectopensource.repository.CargoRepository;
 
 import java.util.List;
@@ -11,32 +13,37 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CargoService {
     private final CargoRepository cargoRepository;
+    private final CargoMapper cargoMapper;
 
 
-    public Cargo crearCargo(Cargo cargo){
-        return cargoRepository.save(cargo);
+    public CargoDTO crearCargo(CargoDTO cargoDTO){
+        Cargo cargo = cargoMapper.toEntity(cargoDTO);
+        return cargoMapper.toDto(cargoRepository.save(cargo));
     }
 
 
-    public List<Cargo> obtenerCargos(){
-        return cargoRepository.findAll();
+    public List<CargoDTO> obtenerCargos(){
+        return cargoRepository.findAll().stream()
+                .map(cargoMapper::toDto)
+                .toList();
     }
 
 
-    public Cargo obtenerCargo(Long id){
-        return cargoRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("No se obtuvo el cargo"));
+    public CargoDTO obtenerCargo(Long id){
+        return cargoRepository.findById(id)
+                .map(cargoMapper::toDto)
+                .orElseThrow(() -> new RuntimeException("No se obtuvo el cargo"));
     }
 
 
-    public Cargo actualizarCargo(Long id, Cargo cargoActualizada){
+    public CargoDTO actualizarCargo(Long id, CargoDTO cargoDTO){
         Cargo cargo = cargoRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("No se obtuvo el cargo"));
 
-        cargo.setNombre(cargoActualizada.getNombre());
-        cargo.setSalarioSemanal(cargoActualizada.getSalarioSemanal());
+        cargo.setNombre(cargoDTO.getNombre());
+        cargo.setSalarioSemanal(cargoDTO.getSalarioSemanal());
 
-        return cargoRepository.save(cargo);
+        return cargoMapper.toDto(cargoRepository.save(cargo));
     }
 
 
