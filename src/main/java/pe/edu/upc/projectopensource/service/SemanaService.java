@@ -1,5 +1,6 @@
 package pe.edu.upc.projectopensource.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.projectopensource.dto.SemanaDTO;
