@@ -3,8 +3,12 @@ package pe.edu.upc.projectopensource.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import pe.edu.upc.projectopensource.dto.PlanillaDTO;
+import pe.edu.upc.projectopensource.dto.SemanaDTO;
 import pe.edu.upc.projectopensource.entity.Planilla;
 import pe.edu.upc.projectopensource.entity.Semana;
+import pe.edu.upc.projectopensource.mapper.PlanillaMapper;
+import pe.edu.upc.projectopensource.mapper.SemanaMapper;
 import pe.edu.upc.projectopensource.repository.PlanillaRepository;
 
 import java.math.BigDecimal;
@@ -15,13 +19,16 @@ import java.util.List;
 public class PlanillaService {
     private final SemanaService semanaService;
     private final PlanillaRepository planillaRepository;
+    private final PlanillaMapper planillaMapper;
+    private final SemanaMapper semanaMapper;
 
     @Lazy
     private final CalculoFinancieroService calculoFinancieroService;
 
 
-    public Planilla crearPlanilla(Long semanaId){
-        Semana semana = semanaService.obtenerSemana(semanaId);
+    public PlanillaDTO crearPlanilla(Long semanaId){
+        SemanaDTO semanaDTO = semanaService.obtenerSemana(semanaId);
+        Semana semana = semanaMapper.toEntity(semanaDTO);
 
         Planilla planilla = new Planilla();
         planilla.setSemana(semana);
@@ -35,31 +42,34 @@ public class PlanillaService {
             planillaRepository.save(planillaGuardada);
         }
 
-        return planillaGuardada;
+        return planillaMapper.toDto(planillaGuardada);
     }
 
 
-    public List<Planilla> obtenerPlanillas(){
-        return planillaRepository.findAll();
+    public List<PlanillaDTO> obtenerPlanillas(){
+        return planillaRepository.findAll().stream()
+                .map(planillaMapper::toDto)
+                .toList();
     }
 
 
-    public Planilla obtenerPlanilla(Long id){
-        return planillaRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Planilla no encontrada"));
+    public PlanillaDTO obtenerPlanilla(Long id){
+        return planillaRepository.findById(id)
+                .map(planillaMapper::toDto)
+                .orElseThrow(() -> new RuntimeException("Planilla no encontrada"));
     }
 
 
-    public Planilla actualizarPlanilla(Long id, Long semanaId){
+    public PlanillaDTO actualizarPlanilla(Long id, Long semanaId){
         Planilla planilla = planillaRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Planilla no encontrada"));
 
         if (semanaId != null) {
-            Semana nuevaSemana = semanaService.obtenerSemana(semanaId);
-            planilla.setSemana(nuevaSemana);
+            SemanaDTO semanaDTO = semanaService.obtenerSemana(semanaId);
+            planilla.setSemana(semanaMapper.toEntity(semanaDTO));
         }
 
-        return planillaRepository.save(planilla);
+        return planillaMapper.toDto(planillaRepository.save(planilla));
     }
 
 
@@ -71,13 +81,13 @@ public class PlanillaService {
     }
 
 
-    public Planilla actualizarTotalGastadoPlanilla(Long id){
+    public PlanillaDTO actualizarTotalGastadoPlanilla(Long id){
         Planilla planilla = planillaRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Planilla no encontrada"));
 
         BigDecimal totalGastado = calculoFinancieroService.calcularGastoTotalPlanilla(id);
         planilla.setTotalGastado(totalGastado);
 
-        return planillaRepository.save(planilla);
+        return planillaMapper.toDto(planillaRepository.save(planilla));
     }
 }

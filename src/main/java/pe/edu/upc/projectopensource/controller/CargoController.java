@@ -1,10 +1,14 @@
 package pe.edu.upc.projectopensource.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.upc.projectopensource.entity.Cargo;
+import pe.edu.upc.projectopensource.dto.CargoDTO;
 import pe.edu.upc.projectopensource.service.CargoService;
+import pe.edu.upc.projectopensource.utils.Response;
 
 import java.util.List;
 
@@ -17,30 +21,64 @@ public class CargoController {
     private final CargoService cargoService;
 
     @PostMapping("/crear")
-    public Cargo crearCargo(@RequestBody Cargo cargo) {
-        return cargoService.crearCargo(cargo);
+    public ResponseEntity<Response<CargoDTO>> crearCargo(@Valid @RequestBody CargoDTO cargoDTO) {
+        CargoDTO data = cargoService.crearCargo(cargoDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Response.<CargoDTO>builder()
+                        .status(HttpStatus.CREATED.value())
+                        .message("Cargo creado exitosamente")
+                        .data(data)
+                        .build());
     }
 
-    @GetMapping
-    public List<Cargo> obtenerCargos() {
-        return cargoService.obtenerCargos();
+    @GetMapping("/lista")
+    public ResponseEntity<Response<List<CargoDTO>>> obtenerCargos() {
+        List<CargoDTO> data = cargoService.obtenerCargos();
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Response.<List<CargoDTO>>builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Lista de cargos")
+                        .data(data)
+                        .build());
     }
 
     @GetMapping("/{id}")
-    public Cargo obtenerCargo(@PathVariable Long id) {
-        return cargoService.obtenerCargo(id);
+    public ResponseEntity<Response<CargoDTO>> obtenerCargo(@PathVariable Long id) {
+        CargoDTO data = cargoService.obtenerCargo(id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Response.<CargoDTO>builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Cargo encontrado")
+                        .data(data)
+                        .build());
     }
 
-    @PutMapping("/{id}")
-    public Cargo actualizarCargo(
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Response<CargoDTO>> actualizarCargo(
             @PathVariable Long id,
-            @RequestBody Cargo cargo
+            @Valid @RequestBody CargoDTO cargoDTO
     ) {
-        return cargoService.actualizarCargo(id, cargo);
+        CargoDTO data = cargoService.actualizarCargo(id, cargoDTO);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Response.<CargoDTO>builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Cargo actualizado exitosamente")
+                        .data(data)
+                        .build());
     }
 
-    @DeleteMapping("/{id}")
-    public void eliminarCargo(@PathVariable Long id) {
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<Response<Void>> eliminarCargo(@PathVariable Long id) {
         cargoService.eliminarCargo(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(Response.<Void>builder()
+                        .status(HttpStatus.NO_CONTENT.value())
+                        .message("Cargo eliminado exitosamente")
+                        .build());
     }
 }

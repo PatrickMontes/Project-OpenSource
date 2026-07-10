@@ -2,7 +2,9 @@ package pe.edu.upc.projectopensource.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pe.edu.upc.projectopensource.dto.TurnoDTO;
 import pe.edu.upc.projectopensource.entity.Turno;
+import pe.edu.upc.projectopensource.mapper.TurnoMapper;
 import pe.edu.upc.projectopensource.repository.TurnoRepository;
 
 import java.util.List;
@@ -11,39 +13,44 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TurnoService {
     private final TurnoRepository turnoRepository;
+    private final TurnoMapper turnoMapper;
 
 
-    public Turno crearTurno(Turno turno){
-        return turnoRepository.save(turno);
+    public TurnoDTO crearTurno(TurnoDTO turnoDTO){
+        Turno turno = turnoMapper.toEntity(turnoDTO);
+        return turnoMapper.toDto(turnoRepository.save(turno));
     }
 
 
-    public List<Turno> obtenerTurnos(){
-        return turnoRepository.findAll();
+    public List<TurnoDTO> obtenerTurnos(){
+        return turnoRepository.findAll().stream()
+                .map(turnoMapper::toDto)
+                .toList();
     }
 
 
-    public Turno obtenerTurno(Long id){
-        return turnoRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Turno no encontrado"));
+    public TurnoDTO obtenerTurno(Long id){
+        return turnoRepository.findById(id)
+                .map(turnoMapper::toDto)
+                .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
     }
 
 
-    public Turno actualizarTurno(Long id, Turno turnoActualizada){
+    public TurnoDTO actualizarTurno(Long id, TurnoDTO turnoDTO){
         Turno turno = turnoRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Turno no encontrao"));
+                () -> new RuntimeException("Turno no encontrado"));
 
-        turno.setTipo(turnoActualizada.getTipo());
-        turno.setHoraInicio(turnoActualizada.getHoraInicio());
-        turno.setHoraFin(turnoActualizada.getHoraFin());
+        turno.setTipo(turnoDTO.getTipo());
+        turno.setHoraInicio(turnoDTO.getHoraInicio());
+        turno.setHoraFin(turnoDTO.getHoraFin());
 
-        return turnoRepository.save(turno);
+        return turnoMapper.toDto(turnoRepository.save(turno));
     }
 
 
     public void eliminarTurno(Long id){
         Turno turno = turnoRepository.findById(id).orElseThrow(
-                ()-> new RuntimeException("Turno no encontrado"));
+                () -> new RuntimeException("Turno no encontrado"));
 
         turnoRepository.delete(turno);
     }

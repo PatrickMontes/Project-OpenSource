@@ -1,13 +1,14 @@
-package pe.edu.upc.projectopensource.entity;
+package pe.edu.upc.projectopensource.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
 
 @Data
-@Embeddable
-public class Direccion {
+@NoArgsConstructor
+@AllArgsConstructor
+public class DireccionDTO {
     @NotBlank(message = "El departamento es obligatorio")
     private String departamento;
 

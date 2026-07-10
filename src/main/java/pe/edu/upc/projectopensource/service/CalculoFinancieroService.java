@@ -1,9 +1,8 @@
 package pe.edu.upc.projectopensource.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import pe.edu.upc.projectopensource.entity.*;
+import pe.edu.upc.projectopensource.dto.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,59 +13,55 @@ public class CalculoFinancieroService {
     private final AsistenciaService asistenciaService;
     private final DescuentoService descuentoService;
     private final EmpleadoService empleadoService;
-
-    @Lazy
-    private final PlanillaService planillaService;
     private final CargoService cargoService;
-
-    @Lazy
     private final PagoService pagoService;
+    private final PlanillaService planillaService;
 
 
     public BigDecimal obtenerPagoBruto(Long empleadoId){
-        Empleado empleado = empleadoService.obtenerEmpleado(empleadoId);
-        Cargo cargo = cargoService.obtenerCargo(empleado.getCargo().getId());
+        EmpleadoDTO empleado = empleadoService.obtenerEmpleado(empleadoId);
+        CargoDTO cargo = cargoService.obtenerCargo(empleado.getCargoId());
 
         return cargo.getSalarioSemanal();
     }
 
 
     public Integer calcularMinutosExtrasTotales(Long empleadoId, Long planillaId){
-        Planilla planilla = planillaService.obtenerPlanilla(planillaId);
+        PlanillaDTO planilla = planillaService.obtenerPlanilla(planillaId);
 
-        List<Asistencia> asistencias = asistenciaService.buscarAsistencias(
-                empleadoId, planilla.getSemana().getId(), null, null, null);
+        List<AsistenciaDTO> asistencias = asistenciaService.buscarAsistencias(
+                empleadoId, planilla.getSemanaId(), null, null, null);
 
         return asistencias.stream()
-                .mapToInt(Asistencia::getMinutosExtras)
+                .mapToInt(AsistenciaDTO::getMinutosExtras)
                 .sum();
     }
 
 
     public BigDecimal calcularDescuentoTotal(Long empleadoId, Long semanaId) {
-        List<Descuento> descuentos = descuentoService.buscarDescuentos(empleadoId, semanaId);
+        List<DescuentoDTO> descuentos = descuentoService.buscarDescuentos(empleadoId, semanaId);
 
         return descuentos.stream()
-                .map(Descuento::getMonto)
+                .map(DescuentoDTO::getMonto)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 
     public BigDecimal calcularPagoNeto(Long empleadoId, Long planillaId) {
-        Planilla planilla = planillaService.obtenerPlanilla(planillaId);
+        PlanillaDTO planilla = planillaService.obtenerPlanilla(planillaId);
 
         BigDecimal salarioBruto = this.obtenerPagoBruto(empleadoId);
-        BigDecimal descuentoTotal = this.calcularDescuentoTotal(empleadoId, planilla.getSemana().getId());
+        BigDecimal descuentoTotal = this.calcularDescuentoTotal(empleadoId, planilla.getSemanaId());
 
         return salarioBruto.subtract(descuentoTotal);
     }
 
 
     public BigDecimal calcularGastoTotalPlanilla(Long planillaId) {
-        List<Pago> pagos = pagoService.buscarPagos(null, planillaId, null);
+        List<PagoDTO> pagos = pagoService.buscarPagos(null, planillaId, null);
 
         return pagos.stream()
-                .map(Pago::getPagoNeto)
+                .map(PagoDTO::getPagoNeto)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

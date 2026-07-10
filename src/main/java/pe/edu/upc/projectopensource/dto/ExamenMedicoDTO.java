@@ -1,23 +1,21 @@
-package pe.edu.upc.projectopensource.entity;
+package pe.edu.upc.projectopensource.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
 @Data
-@Embeddable
-public class ExamenMedico {
-    @Column(name = "examen_fecha")
+@NoArgsConstructor
+@AllArgsConstructor
+public class ExamenMedicoDTO {
     @Past(message = "La fecha del examen debe ser una fecha pasada")
     private LocalDate fecha;
 
-    @Column(name = "examen_monto_gastado")
     private BigDecimal montoGastado;
 
-    @Column(name = "examen_alta")
     private Boolean alta;
 }
